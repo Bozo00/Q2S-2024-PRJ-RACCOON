@@ -1,42 +1,35 @@
-import { Card, CardTitle } from "@/components/ui/card";
-import { Navbar } from "@/sections/navbar";
-import Image from "next/image";
+// pages/index.tsx
+"use client";
 
-export default function Home() {
+
+import React, { useState, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import Rocket from "@/sections/rocket";
+
+const Home: React.FC = () => {
+  const [inclination, setInclination] = useState({ x: 0, y: 0, z: 0 });
+  const [acceleration, setAcceleration] = useState({ x: 0, y: 0, z: 0 });
+
+  useEffect(() => {
+    const updateData = () => {
+      // Replace with your actual method to get data
+      setInclination({ x: 0.01, y: 0.02, z: 0.03 }); // Example data
+      setAcceleration({ x: 0.1, y: 0.2, z: 0.3 }); // Example data
+    };
+
+    const interval = setInterval(updateData, 100); // Update every 100ms
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="flex flex-col h-screen">
-      <div className="h-[10%] w-full flex justify-between bg-primary">
-        <Navbar />
-      </div>
-
-
-
-      <div className="h-[90%] bg-secondary flex items-center justify-center">
-        <Card >
-          <CardTitle className="p-10 flex">
-            Conect your PoketQube
-          </CardTitle>
-        </Card>
-      </div>
-
-
-
-
-
-    </div>
-
-
-
-    // <div className="flex items-center justify-center h-screen">
-    //   <Navbar />
-    //   <div className="bg-card p-4 rounded-lg">
-    //     <Card>
-    //       <CardTitle className="p-10">
-    //         Conect your PoketQube
-    //       </CardTitle>
-    //     </Card>
-    //   </div>
-    // </div>
-
+    <Canvas style={{ height: "100vh" }}>
+      <ambientLight />
+      <pointLight position={[10, 10, 10]} />
+      <Rocket inclination={inclination} acceleration={acceleration} />
+      <OrbitControls />
+    </Canvas>
   );
-}
+};
+
+export default Home;
